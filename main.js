@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         进化自动化脚本
 // @namespace    bilibili12433014
-// @version      1.3.0
+// @version      1.3.1
 // @description  一个用于`https://g8hh.github.io/evolve/`简单自动化的脚本
 // @author       bilibili12433014
 // @homepageURL  https://github.com/bilibili12433014
@@ -54,7 +54,7 @@ function auto_click() {
         buttonElement = document.getElementById(button);
         cntElement = document.getElementById(cnt);
 
-        t = 100;
+        t = 500;
         if (button === "city-food") {
             t = 50;
         }
@@ -111,23 +111,23 @@ function auto_sell2() {
             },200);
             setTimeout(function() {
                 document.getElementById("5-label").click();
-            },300);
+            },1300);
             setTimeout(function() {
                 document.getElementById("5-content").children[0].children[0].children[0].children[0].children[0].children[0].click();
-            },400);
+            },1400);
             setTimeout(function() {
                 window.auto_sell2_status = false;
-            },500);
+            },1500);
             return;
         }
     }
     document.getElementById("5-label").click();
     setTimeout(function() {
         document.getElementById("5-content").children[0].children[0].children[0].children[0].children[0].children[0].click();
-    },200);
+    },1200);
     setTimeout(function() {
         window.auto_sell2_status = false;
-    },400);
+    },1400);
 }
 
 function auto_buy() {
@@ -212,11 +212,11 @@ function main_loop() {
     setInterval(main_loop,1);
     setTimeout(function() {
         document.getElementById("open_im").click()
-    },2000);
+    },1000);
     setTimeout(function() {
         document.getElementById("im_main").children[2].children[3].children[5].click();
-    },4000);
+    },2000);
     setTimeout(function() {
         document.getElementById("im_main").parentElement.children[1].click();
-    },6000);
+    },3000);
 })();
