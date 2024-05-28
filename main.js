@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         进化自动化脚本
 // @namespace    bilibili12433014
-// @version      1.0.0
+// @version      1.1.0
 // @description  一个用于`https://g8hh.github.io/evolve/`简单自动化的脚本
 // @author       bilibili12433014
 // @homepageURL  https://github.com/bilibili12433014
@@ -12,8 +12,9 @@
 // @grant        none
 // ==/UserScript==
 window.setting_map = {
-    "自动点击物资": true,
-    "自动售卖物资": true,
+    "自动点击物资": false,
+    "自动售卖物资": false,
+    "自动增加到资金上限":false,
 };
 
 function auto_click() {
@@ -64,6 +65,46 @@ function auto_sell() {
     }
 }
 
+function auto_sell2() {
+    if (!window.setting_map["自动点击物资"]) {
+        document.getElementById("settingsBox").children[0].children[1].click();
+    }
+    if (!window.setting_map["自动售卖物资"]) {
+        document.getElementById("settingsBox").children[1].children[1].click();
+    }
+    if (window.auto_sell2_status){
+        return;
+    }
+    if (document.getElementById("cntMoney").className.indexOf("has-text-warning") !== -1) {
+        return;
+    }
+    window.auto_sell2_status = true;
+    var sell_cnt = ["cntLumber", "cntStone"];
+    var cntElement;
+
+    for (var item of sell_cnt) {
+        cntElement = document.getElementById(item);
+        if (cntElement.className.indexOf("has-text-warning") !== -1) {
+            setTimeout(function() {
+                document.getElementById("11-label").click();
+            },1);
+            setTimeout(function() {
+                document.getElementById("11-content").children[0].children[0].children[0].children[0].children[0].children[0].click();
+            },200);
+            setTimeout(function() {
+                document.getElementById("5-label").click();
+            },300);
+            setTimeout(function() {
+                document.getElementById("5-content").children[0].children[0].children[0].children[0].children[0].children[0].click();
+            },400);
+            setTimeout(function() {
+                window.auto_sell2_status = false;
+            },500);
+            return;
+        }
+    }
+}
+
 function main_loop() {
     if (window.setting_map["自动点击物资"]) {
         auto_click();
@@ -71,15 +112,18 @@ function main_loop() {
     if (window.setting_map["自动售卖物资"]) {
         auto_sell();
     }
-
+    if (window.setting_map["自动增加到资金上限"]) {
+        auto_sell2();
+    }
 }
 
 
 (function() {
     // 创建浮动显示框
     const settingsBox = document.createElement('div');
+    settingsBox.id = 'settingsBox';
     settingsBox.style.position = 'fixed';
-    settingsBox.style.bottom = '25px';
+    settingsBox.style.bottom = '30px';
     settingsBox.style.left = '10px';
     settingsBox.style.width = '200px';
     settingsBox.style.padding = '10px';
