@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         进化自动化脚本
 // @namespace    bilibili12433014
-// @version      1.1.1
+// @version      1.2.0
 // @description  一个用于`https://g8hh.github.io/evolve/`简单自动化的脚本
 // @author       bilibili12433014
 // @homepageURL  https://github.com/bilibili12433014
@@ -11,19 +11,29 @@
 // @icon         https://avatars.githubusercontent.com/u/73748897?v=4
 // @grant        none
 // ==/UserScript==
-window.setting_map = {
-    "自动点击物资": false,
-    "自动售卖物资": false,
-    "自动增加到资金上限":false,
+window.sell_item_map = {
+    "铀": "market-Uranium",
+    "钢": "market-Steel",
+    "钛": "market-Titanium",
+    "合金": "market-Alloy",
+    "合金": "market-Polymer",
+    "铱": "market-Iridium",
+    "氦-3": "market-Helium_3",
 };
 
-window.auto_sell2_status=false;
+window.setting_map = {
+    "自动收集物资": false,
+    "自动售卖物资": false,
+    "自动增加到资金上限": false,
+};
+
+window.auto_sell2_status = false;
 
 function auto_click() {
     var add = [
         ["city-food", "cntFood"],
         ["city-lumber", "cntLumber"],
-        ["city-stone", "resStone"]
+        ["city-stone", "cntStone"]
     ];
 
     var t = 0;
@@ -68,7 +78,7 @@ function auto_sell() {
 }
 
 function auto_sell2() {
-    if (!window.setting_map["自动点击物资"]) {
+    if (!window.setting_map["自动收集物资"]) {
         document.getElementById("settingsBox").children[0].children[1].click();
     }
     if (!window.setting_map["自动售卖物资"]) {
@@ -115,8 +125,31 @@ function auto_sell2() {
     },200);
 }
 
+function auto_buy() {
+    if (document.getElementById("cntMoney").className.indexOf("has-text-warning") !== -1) {
+        window.auto_sell2_status=false;
+    }
+    var buyElement;
+    for (const [key, value] of Object.entries(window.sell_item_map)) {
+        if(window.setting_map["自动购买"+key]) {
+            if (!window.setting_map["自动增加到资金上限"]) {
+                document.getElementById("settingsBox").children[2].children[1].click();
+            }
+            if (document.getElementById("cntMoney").className.indexOf("has-text-warning") == -1 || document.getElementById("cnt"+value.substring(7)).className.indexOf("has-text-warning") !== -1) {
+                continue;
+            }
+            document.getElementById("11-label").click();
+            buyElement = document.getElementById(value);
+            if (!buyElement) {
+                continue;
+            }
+            buyElement.children[2].click();
+        }
+    }
+}
+
 function main_loop() {
-    if (window.setting_map["自动点击物资"]) {
+    if (window.setting_map["自动收集物资"]) {
         auto_click();
     }
     if (window.setting_map["自动售卖物资"]) {
@@ -125,10 +158,14 @@ function main_loop() {
     if (window.setting_map["自动增加到资金上限"]) {
         auto_sell2();
     }
+    auto_buy();
 }
 
 
 (function() {
+    for (const [key, value] of Object.entries(window.sell_item_map)) {
+        window.setting_map["自动购买"+key] = false;
+    }
     // 创建浮动显示框
     const settingsBox = document.createElement('div');
     settingsBox.id = 'settingsBox';
@@ -166,4 +203,13 @@ function main_loop() {
         settingsBox.appendChild(settingItem);
     }
     setInterval(main_loop,1);
+    setTimeout(function() {
+        document.getElementById("open_im").click()
+    },2000);
+    setTimeout(function() {
+        document.getElementById("im_main").children[2].children[3].children[5].click();
+    },4000);
+    setTimeout(function() {
+        document.getElementById("im_main").parentElement.children[1].click();
+    },6000);
 })();
