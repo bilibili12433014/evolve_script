@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         进化自动化脚本
 // @namespace    bilibili12433014
-// @version      1.2.1.1
+// @version      1.3.0
 // @description  一个用于`https://g8hh.github.io/evolve/`简单自动化的脚本
 // @author       bilibili12433014
 // @homepageURL  https://github.com/bilibili12433014
@@ -26,6 +26,7 @@ window.sell_item_map = {
 };
 
 window.setting_map = {
+    "暂时关闭所有功能":false,
     "自动收集物资": false,
     "自动售卖物资": false,
     "自动增加到资金上限": false,
@@ -83,10 +84,10 @@ function auto_sell() {
 
 function auto_sell2() {
     if (!window.setting_map["自动收集物资"]) {
-        document.getElementById("settingsBox").children[0].children[1].click();
+        document.getElementById("settingsBox").children[1].children[1].click();
     }
     if (!window.setting_map["自动售卖物资"]) {
-        document.getElementById("settingsBox").children[1].children[1].click();
+        document.getElementById("settingsBox").children[2].children[1].click();
     }
     if (window.auto_sell2_status){
         return;
@@ -137,7 +138,7 @@ function auto_buy() {
     for (const [key, value] of Object.entries(window.sell_item_map)) {
         if(window.setting_map["自动购买"+key]) {
             if (!window.setting_map["自动增加到资金上限"]) {
-                document.getElementById("settingsBox").children[2].children[1].click();
+                document.getElementById("settingsBox").children[3].children[1].click();
             }
             if (document.getElementById("cntMoney").className.indexOf("has-text-warning") !== -1 && document.getElementById("cnt"+value.substring(7)).className.indexOf("has-text-warning") == -1) {
                 document.getElementById("11-label").click();
@@ -152,6 +153,9 @@ function auto_buy() {
 }
 
 function main_loop() {
+    if (window.setting_map["暂时关闭所有功能"]) {
+        return;
+    }
     if (window.setting_map["自动收集物资"]) {
         auto_click();
     }
