@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         进化自动化脚本
 // @namespace    bilibili12433014
-// @version      1.2.0
+// @version      1.2.1
 // @description  一个用于`https://g8hh.github.io/evolve/`简单自动化的脚本
 // @author       bilibili12433014
 // @homepageURL  https://github.com/bilibili12433014
@@ -16,7 +16,7 @@ window.sell_item_map = {
     "钢": "market-Steel",
     "钛": "market-Titanium",
     "合金": "market-Alloy",
-    "合金": "market-Polymer",
+    "聚合物": "market-Polymer",
     "铱": "market-Iridium",
     "氦-3": "market-Helium_3",
 };
@@ -119,10 +119,10 @@ function auto_sell2() {
     document.getElementById("5-label").click();
     setTimeout(function() {
         document.getElementById("5-content").children[0].children[0].children[0].children[0].children[0].children[0].click();
-    },100);
+    },200);
     setTimeout(function() {
         window.auto_sell2_status = false;
-    },200);
+    },400);
 }
 
 function auto_buy() {
@@ -135,10 +135,9 @@ function auto_buy() {
             if (!window.setting_map["自动增加到资金上限"]) {
                 document.getElementById("settingsBox").children[2].children[1].click();
             }
-            if (document.getElementById("cntMoney").className.indexOf("has-text-warning") == -1 || document.getElementById("cnt"+value.substring(7)).className.indexOf("has-text-warning") !== -1) {
-                continue;
+            if (document.getElementById("cntMoney").className.indexOf("has-text-warning") !== -1 && document.getElementById("cnt"+value.substring(7)).className.indexOf("has-text-warning") == -1) {
+                document.getElementById("11-label").click();
             }
-            document.getElementById("11-label").click();
             buyElement = document.getElementById(value);
             if (!buyElement) {
                 continue;
