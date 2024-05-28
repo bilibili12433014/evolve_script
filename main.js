@@ -1,12 +1,12 @@
 // ==UserScript==
 // @name         进化自动化脚本
 // @namespace    bilibili12433014
-// @version      2024-05-28
+// @version      1.0.0
 // @description  一个用于`https://g8hh.github.io/evolve/`简单自动化的脚本
 // @author       bilibili12433014
 // @homepageURL  https://github.com/bilibili12433014
-// @updateURL    https://github.com/bilibili12433014/evolve_script/main.js
-// @downloadURL  https://github.com/bilibili12433014/evolve_script/main.js
+// @updateURL    https://github.com/bilibili12433014/evolve_script/raw/main/main.js
+// @downloadURL  https://github.com/bilibili12433014/evolve_script/raw/main/main.js
 // @match        https://g8hh.github.io/evolve/
 // @icon         https://avatars.githubusercontent.com/u/73748897?v=4
 // @grant        none
