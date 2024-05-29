@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         进化自动化脚本
 // @namespace    bilibili12433014
-// @version      1.3.3
+// @version      1.3.4
 // @description  一个用于`https://g8hh.github.io/evolve/`简单自动化的脚本
 // @author       bilibili12433014
 // @homepageURL  https://github.com/bilibili12433014
@@ -16,6 +16,7 @@ window.sell_item_map = {
     "铁": "market-Iron",
     "铝": "market-Aluminium",
     "水泥": "market-Cement",
+    "石油": "market-Oil",
     "铀": "market-Uranium",
     "钢": "market-Steel",
     "钛": "market-Titanium",
