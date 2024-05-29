@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         进化自动化脚本
 // @namespace    bilibili12433014
-// @version      1.3.1
+// @version      1.3.2
 // @description  一个用于`https://g8hh.github.io/evolve/`简单自动化的脚本
 // @author       bilibili12433014
 // @homepageURL  https://github.com/bilibili12433014
@@ -26,10 +26,10 @@ window.sell_item_map = {
 };
 
 window.setting_map = {
-    "暂时关闭所有功能":false,
-    "自动收集物资": false,
-    "自动售卖物资": false,
-    "自动增加到资金上限": false,
+    "启用脚本":false,
+    "自动收集物资": true,
+    "自动售卖物资": true,
+    "自动增加到资金上限": true,
 };
 
 window.auto_sell2_status = false;
@@ -153,7 +153,7 @@ function auto_buy() {
 }
 
 function main_loop() {
-    if (window.setting_map["暂时关闭所有功能"]) {
+    if (!window.setting_map["启用脚本"]) {
         return;
     }
     if (window.setting_map["自动收集物资"]) {
