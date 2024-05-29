@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         进化自动化脚本
 // @namespace    bilibili12433014
-// @version      1.3.2
+// @version      1.3.3
 // @description  一个用于`https://g8hh.github.io/evolve/`简单自动化的脚本
 // @author       bilibili12433014
 // @homepageURL  https://github.com/bilibili12433014
@@ -169,7 +169,7 @@ function main_loop() {
 }
 
 
-(function() {
+setTimeout(function() {
     for (const [key, value] of Object.entries(window.sell_item_map)) {
         window.setting_map["自动购买"+key] = false;
     }
@@ -219,4 +219,4 @@ function main_loop() {
     setTimeout(function() {
         document.getElementById("im_main").parentElement.children[1].click();
     },3000);
-})();
+},5000);
