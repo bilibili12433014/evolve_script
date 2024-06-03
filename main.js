@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         进化自动化脚本
 // @namespace    bilibili12433014
-// @version      2.0.0
+// @version      2.0.1
 // @description  一个用于`https://g8hh.github.io/evolve/`简单自动化的脚本
 // @author       bilibili12433014
 // @homepageURL  https://github.com/bilibili12433014
@@ -12,7 +12,7 @@
 // @grant        none
 // ==/UserScript==
 
-window.clickTimes = 1000;
+window.clickTimes = 500;
 window.eventQueue = [];
 window.circle = [];
 window.setting_data = {};
@@ -326,10 +326,14 @@ function mainFunction() {
     }
 
     var buy = [];
+    var sell = [];
     for (const [key, value] of Object.entries(window.setting_data)) {
         if (key.startsWith("enable_buy_") && value) {
             const name = key.substring(11);
-            buy.push(name)
+            sell.push(name);
+            if (value) {
+                buy.push(name);
+            }
             if (!window.circle.includes(name)) {
                 window.circle.push(name);
             }
@@ -354,6 +358,15 @@ function mainFunction() {
         }
     }
 
+    for (const name of sell) {
+        const item = "market-" + name;
+        const marketElements = document.getElementById(item);
+        if (window.setting_data.enable_cell && window.evolve.global.resource[name].max > 10000 && window.evolve.global.resource[name].max - window.evolve.global.resource[name].amount < 1000) {
+            for(i=0;i<10;++i) {
+                marketElements.children[4].click();
+            }
+        }
+    }
 
     if (window.setting_data.enable_collect) {
         var button1 = document.getElementById("city-food").children[0];
