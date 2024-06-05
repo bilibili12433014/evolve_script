@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         进化自动化脚本
 // @namespace    bilibili12433014
-// @version      2.1.2
+// @version      2.1.3
 // @description  一个用于`https://g8hh.github.io/evolve/`简单自动化的脚本
 // @author       bilibili12433014
 // @homepageURL  https://github.com/bilibili12433014
@@ -236,15 +236,17 @@ function loadSettings() {
 
         // 遍历setting_data，设置对应的项目为保存的值
         for (const [key, value] of Object.entries(settingData)) {
-            const element = document.getElementById(key + '_input');
-            if (element) {
-                if (element.type === 'checkbox') {
-                    element.checked = value;
-                } else {
-                    element.value = value;
+            if (key != "enable_fullAll") {
+                const element = document.getElementById(key + '_input');
+                if (element) {
+                    if (element.type === 'checkbox') {
+                        element.checked = value;
+                    } else {
+                        element.value = value;
+                    }
                 }
+                element.dispatchEvent(new Event('change'));
             }
-            element.dispatchEvent(new Event('change'));
         }
     }
 }
@@ -426,12 +428,24 @@ function createFullAllButton() {
     button.style.backgroundColor = 'white';
     button.style.padding = '10px 20px';
     button.style.fontSize = '16px';
+    button.style.display = 'none';
+    button.id = "fullAll";
 
     button.onclick = function() {
         fullAll();
     };
 
     return button;
+}
+
+window.enable_fullAll = function () {
+    window.eventQueue.push(["enable_fullAll",true]);
+    document.getElementById("fullAll").style.display = 'block';
+}
+
+window.disable_fullAll = function () {
+    window.eventQueue.push(["enable_fullAll",false]);
+    document.getElementById("fullAll").style.display = 'none';
 }
 
 function init() {
@@ -471,6 +485,9 @@ function init() {
                             ele.children[1].appendChild(createFullAllButton());
                             document.body.appendChild(ele);
                             loadSettings();
+                            if (window.setting_data.enable_fullAll) {
+                                ele.children[1].children[1].style.display = 'block';
+                            }
                             setInterval(mainFunction, 1);
                         }, 500);
                     }, 200);
