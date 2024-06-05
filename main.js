@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         进化自动化脚本
 // @namespace    bilibili12433014
-// @version      2.1.5
+// @version      2.1.6
 // @description  一个用于`https://g8hh.github.io/evolve/`简单自动化的脚本
 // @author       bilibili12433014
 // @homepageURL  https://github.com/bilibili12433014
@@ -458,22 +458,26 @@ function init() {
             setTimeout(() => {
                 document.getElementById("im_main").parentElement.children[1].click();
                 setTimeout(() => {
-                    document.getElementById("17-label").click();
+                    if (!window.evolve || !window.getComputedStyle(document.querySelector('label.switch:nth-child(12) > span:nth-child(2)')).background.startsWith("rgb(121, 87, 213)")) {
+                        document.getElementById("17-label").click();
+                    }
                     setTimeout(() => {
                         // 设置2个按钮为true
-                        if (!document.querySelector("#settings > label:nth-child(11) > input[type=checkbox]").value) {
+                        if (!window.evolve) {
                             document.querySelector("#settings > label:nth-child(11) > input[type=checkbox]").click();
                         }
-                        if (!document.querySelector("#settings > label:nth-child(12) > input[type=checkbox]").value) {
+                        if (!window.getComputedStyle(document.querySelector('label.switch:nth-child(12) > span:nth-child(2)')).background.startsWith("rgb(121, 87, 213)")) {
                             document.querySelector("#settings > label:nth-child(12) > input[type=checkbox]").click();
                         }
 
                         // 确保设置完成后继续执行后续步骤
                         setTimeout(() => {
                             var input = document.querySelector('div.control:nth-child(1) > input:nth-child(1)');
-                            input.value = 10;
-                            input.dispatchEvent(new Event('input', { bubbles: true, cancelable: true }));
-                            input.dispatchEvent(new Event('change', { bubbles: true, cancelable: true }));
+                            if (input) {
+                                input.value = 10;
+                                input.dispatchEvent(new Event('input', { bubbles: true, cancelable: true }));
+                                input.dispatchEvent(new Event('change', { bubbles: true, cancelable: true }));
+                            }
                             // 步骤2：根据页面内容动态追加window.setting_config的内容
                             const marketElements = document.querySelectorAll("#market > *");
                             marketElements.forEach(element => {
@@ -499,8 +503,8 @@ function init() {
                             }
                             setInterval(mainFunction, 1);
                         }, 500);
-                    }, 1000);
-                }, 200);
+                    }, 500);
+                }, 500);
             }, 200);
         }, 200);
     }, 1000);
