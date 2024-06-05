@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         进化自动化脚本
 // @namespace    bilibili12433014
-// @version      2.1.4
+// @version      2.1.5
 // @description  一个用于`https://g8hh.github.io/evolve/`简单自动化的脚本
 // @author       bilibili12433014
 // @homepageURL  https://github.com/bilibili12433014
@@ -461,8 +461,12 @@ function init() {
                     document.getElementById("17-label").click();
                     setTimeout(() => {
                         // 设置2个按钮为true
-                        document.querySelector("#settings > label:nth-child(11) > input[type=checkbox]").click();
-                        document.querySelector("#settings > label:nth-child(12) > input[type=checkbox]").click();
+                        if (!document.querySelector("#settings > label:nth-child(11) > input[type=checkbox]").value) {
+                            document.querySelector("#settings > label:nth-child(11) > input[type=checkbox]").click();
+                        }
+                        if (!document.querySelector("#settings > label:nth-child(12) > input[type=checkbox]").value) {
+                            document.querySelector("#settings > label:nth-child(12) > input[type=checkbox]").click();
+                        }
 
                         // 确保设置完成后继续执行后续步骤
                         setTimeout(() => {
