@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         进化自动化脚本
 // @namespace    bilibili12433014
-// @version      2.1.0
+// @version      2.1.1
 // @description  一个用于`https://g8hh.github.io/evolve/`简单自动化的脚本
 // @author       bilibili12433014
 // @homepageURL  https://github.com/bilibili12433014
@@ -12,7 +12,7 @@
 // @grant        none
 // ==/UserScript==
 
-window.clickTimes = 500;
+window.clickTimes = 400;
 window.eventQueue = [];
 window.circle = [];
 window.setting_data = {};
@@ -304,22 +304,25 @@ function mainFunction() {
         window.scriptLock = false;
         return;
     }
+
+    var moneyIsFull = window.evolve.global.resource.Money.amount/window.evolve.global.resource.Money.max*100>99.9;
+
     var i;
     var sell_button1 = document.getElementById("market-Lumber").children[4];
     var sell_button2 = document.getElementById("market-Stone").children[4];
     var sell_button3 = document.getElementById("market-Food").children[4];
     var times = Math.max(1,parseInt(1+window.clickTimes/window.evolve.global.city.market.qty));
-    if (window.setting_data.enable_cell && window.evolve.global.resource.Lumber.amount/window.evolve.global.resource.Lumber.max*100>window.setting_data.hold_Lumber) {
+    if (window.setting_data.enable_cell && !moneyIsFull && window.evolve.global.resource.Lumber.amount/window.evolve.global.resource.Lumber.max*100>window.setting_data.hold_Lumber) {
         for (i=0;i<Math.max(times,(window.evolve.global.resource.Lumber.amount-window.evolve.global.resource.Lumber.max*window.setting_data.hold_Lumber/100)/window.evolve.global.city.market.qty);++i) {
             sell_button1.click();
         }
     }
-    if (window.setting_data.enable_cell && window.evolve.global.resource.Stone.amount/window.evolve.global.resource.Stone.max*100>window.setting_data.hold_Stone) {
+    if (window.setting_data.enable_cell && !moneyIsFull && window.evolve.global.resource.Stone.amount/window.evolve.global.resource.Stone.max*100>window.setting_data.hold_Stone) {
         for (i=0;i<Math.max(times,(window.evolve.global.resource.Stone.amount-window.evolve.global.resource.Stone.max*window.setting_data.hold_Stone/100)/window.evolve.global.city.market.qty);++i) {
             sell_button2.click();
         }
     }
-    if (window.setting_data.enable_cell && window.setting_data.enable_sell_Food && window.evolve.global.resource.Food.amount/window.evolve.global.resource.Food.max*100>window.setting_data.hold_Lumber) {
+    if (window.setting_data.enable_cell && !moneyIsFull && window.setting_data.enable_sell_Food && window.evolve.global.resource.Food.amount/window.evolve.global.resource.Food.max*100>window.setting_data.hold_Lumber) {
         for (i=0;i<Math.max(times,(window.evolve.global.resource.Food.amount-window.evolve.global.resource.Food.max*window.setting_data.hold_Food/100)/window.evolve.global.city.market.qty);++i) {
             sell_button3.click();
         }
@@ -358,7 +361,7 @@ function mainFunction() {
         }
     }
 
-    if (window.evolve.global.resource.Money.amount/window.evolve.global.resource.Money.max*100<=99) {
+    if (!moneyIsFull) {
         for (const name of sell) {
             const item = "market-" + name;
             const marketElements = document.getElementById(item);
