@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         进化自动化脚本
 // @namespace    bilibili12433014
-// @version      2.0.1
+// @version      2.1.0
 // @description  一个用于`https://g8hh.github.io/evolve/`简单自动化的脚本
 // @author       bilibili12433014
 // @homepageURL  https://github.com/bilibili12433014
@@ -358,12 +358,14 @@ function mainFunction() {
         }
     }
 
-    for (const name of sell) {
-        const item = "market-" + name;
-        const marketElements = document.getElementById(item);
-        if (window.setting_data.enable_cell && window.evolve.global.resource[name].max > 10000 && window.evolve.global.resource[name].max - window.evolve.global.resource[name].amount < 1000) {
-            for(i=0;i<10;++i) {
-                marketElements.children[4].click();
+    if (window.evolve.global.resource.Money.amount/window.evolve.global.resource.Money.max*100<=99) {
+        for (const name of sell) {
+            const item = "market-" + name;
+            const marketElements = document.getElementById(item);
+            if (window.setting_data.enable_cell && window.evolve.global.resource[name].max > 10000 && window.evolve.global.resource[name].max - window.evolve.global.resource[name].amount < 1000) {
+                for(i=0;i<10;++i) {
+                    marketElements.children[4].click();
+                }
             }
         }
     }
@@ -389,6 +391,44 @@ function mainFunction() {
         }
     }
     window.scriptLock = false;
+}
+
+function fullAll() {
+    console.log('fullAll function called');
+    document.querySelector('div.importExport:nth-child(19) > button:nth-child(4)').click();
+    document.querySelector('div.importExport:nth-child(19) > button:nth-child(3)').click();
+    setTimeout(() => {
+        const text = document.getElementById("importExport");
+        const e = JSON.parse(window.LZString.decompressFromBase64(text.value));
+        for (const key in e.resource) {
+            if (e.resource[key].max > 2) {
+                e.resource[key].amount = e.resource[key].max - 1;
+            }
+        }
+        window.e=e;
+        text.value = window.LZString.compressToBase64(JSON.stringify(e));
+        setTimeout(() => {
+            document.querySelector('div.importExport:nth-child(19) > button:nth-child(2)').click();
+        },100);
+    },100);
+}
+
+function createFullAllButton() {
+    const button = document.createElement('button');
+    button.innerHTML = '一键充满所有资源';
+    button.style.position = 'absolute';
+    button.style.bottom = '10px';
+    button.style.right = '10px';
+    button.style.color = 'black';
+    button.style.backgroundColor = 'white';
+    button.style.padding = '10px 20px';
+    button.style.fontSize = '16px';
+
+    button.onclick = function() {
+        fullAll();
+    };
+
+    return button;
 }
 
 function init() {
@@ -425,6 +465,7 @@ function init() {
                             window.loadSettings = loadSettings;
                             const ele = createSettingsElement();
                             ele.children[1].appendChild(createSettingsItems());
+                            ele.children[1].appendChild(createFullAllButton());
                             document.body.appendChild(ele);
                             loadSettings();
                             setInterval(mainFunction, 1);
