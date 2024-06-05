@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         进化自动化脚本
 // @namespace    bilibili12433014
-// @version      2.1.1
+// @version      2.1.2
 // @description  一个用于`https://g8hh.github.io/evolve/`简单自动化的脚本
 // @author       bilibili12433014
 // @homepageURL  https://github.com/bilibili12433014
@@ -405,7 +405,7 @@ function fullAll() {
         const e = JSON.parse(window.LZString.decompressFromBase64(text.value));
         for (const key in e.resource) {
             if (e.resource[key].max > 2) {
-                e.resource[key].amount = e.resource[key].max - 1;
+                e.resource[key].amount = e.resource[key].max;
             }
         }
         window.e=e;
