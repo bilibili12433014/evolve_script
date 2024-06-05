@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         进化自动化脚本
 // @namespace    bilibili12433014
-// @version      2.1.3
+// @version      2.1.4
 // @description  一个用于`https://g8hh.github.io/evolve/`简单自动化的脚本
 // @author       bilibili12433014
 // @homepageURL  https://github.com/bilibili12433014
@@ -139,7 +139,7 @@ function createSettingsItems() {
         const itemContainer = document.createElement('div');
         itemContainer.style.display = 'flex';
         itemContainer.style.alignItems = 'center';
-        itemContainer.style.marginBottom = '10px';
+        itemContainer.style.marginBottom = '5px';
         itemContainer.style.marginRight = '20px';
         itemContainer.style.width = 'calc(50% - 20px)';
 
@@ -148,10 +148,11 @@ function createSettingsItems() {
         label.id = key + '_text';
         label.style.marginRight = '10px';
         label.style.width = '100px'; // 设置固定宽度以对齐
+        label.style.font_size = '14px';
 
         inputElement.id = key + '_input';
         inputElement.style.maxWidth = '200px'; // 设置输入元素的最大宽度
-        inputElement.style.height = '24px';
+        inputElement.style.height = '18px';
 
         const extraText = document.createElement('span');
         extraText.id = key + '_extra';
@@ -457,14 +458,18 @@ function init() {
             setTimeout(() => {
                 document.getElementById("im_main").parentElement.children[1].click();
                 setTimeout(() => {
-                    document.getElementById("5-label").click();
+                    document.getElementById("17-label").click();
                     setTimeout(() => {
                         // 设置2个按钮为true
-                        document.querySelector("#settings > label:nth-child(11) > input[type=checkbox]").checked = true;
-                        document.querySelector("#settings > label:nth-child(12) > input[type=checkbox]").checked = true;
+                        document.querySelector("#settings > label:nth-child(11) > input[type=checkbox]").click();
+                        document.querySelector("#settings > label:nth-child(12) > input[type=checkbox]").click();
 
                         // 确保设置完成后继续执行后续步骤
                         setTimeout(() => {
+                            var input = document.querySelector('div.control:nth-child(1) > input:nth-child(1)');
+                            input.value = 10;
+                            input.dispatchEvent(new Event('input', { bubbles: true, cancelable: true }));
+                            input.dispatchEvent(new Event('change', { bubbles: true, cancelable: true }));
                             // 步骤2：根据页面内容动态追加window.setting_config的内容
                             const marketElements = document.querySelectorAll("#market > *");
                             marketElements.forEach(element => {
@@ -490,10 +495,10 @@ function init() {
                             }
                             setInterval(mainFunction, 1);
                         }, 500);
-                    }, 200);
-                }, 100);
-            }, 100);
-        }, 100);
+                    }, 1000);
+                }, 200);
+            }, 200);
+        }, 200);
     }, 1000);
 }
 
